@@ -469,7 +469,7 @@ impl Font {
                     try!(self.rasterize_glyph(&mut temp_canvas,
                                             glyph_id,
                                             point_size,
-                                            Point2D::new(origin.x, canvas.size.height - origin.y)
+                                            Point2D::new(origin.x, canvas.size.height - origin.y),
 
                                             hinting_options,
                                             rasterization_options));
