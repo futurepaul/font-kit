@@ -464,12 +464,11 @@ impl Font {
                     //
                     // FIXME(pcwalton): Could improve this by only allocating a canvas with a tight
                     // bounding rect and blitting only that part.
-                    println!("rasterizing glpyh!");
                     let mut temp_canvas = Canvas::new(&canvas.size, Format::Rgba32);
                     try!(self.rasterize_glyph(&mut temp_canvas,
                                             glyph_id,
                                             point_size,
-                                            &Point2D::new(origin.x, canvas.size.height as f32 - origin.y),
+                                            origin,
                                             hinting_options,
                                             rasterization_options));
                     canvas.blit_from_canvas(&temp_canvas);
@@ -477,7 +476,7 @@ impl Font {
                 }
                 Some(cg_color_space_and_format) => cg_color_space_and_format,
             };
-
+        
         let core_graphics_context =
             CGContext::create_bitmap_context(Some(canvas.pixels.as_mut_ptr() as *mut _),
                                              canvas.size.width as usize,
@@ -518,7 +517,7 @@ impl Font {
             Format::A8 => core_graphics_context.set_gray_fill_color(1.0, 1.0),
         }
 
-        let origin = CGPoint::new(origin.x as CGFloat, origin.y as CGFloat);
+        let origin = CGPoint::new(origin.x as CGFloat, (canvas.size.height as f32 - origin.y) as CGFloat);
         core_graphics_context.set_font(&self.core_text_font.copy_to_CGFont());
         core_graphics_context.set_font_size(point_size as CGFloat);
         core_graphics_context.set_text_drawing_mode(CGTextDrawingMode::CGTextFill);
