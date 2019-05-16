@@ -476,7 +476,7 @@ impl Font {
                 }
                 Some(cg_color_space_and_format) => cg_color_space_and_format,
             };
-        
+
         let core_graphics_context =
             CGContext::create_bitmap_context(Some(canvas.pixels.as_mut_ptr() as *mut _),
                                              canvas.size.width as usize,
