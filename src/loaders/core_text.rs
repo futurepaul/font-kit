@@ -464,11 +464,13 @@ impl Font {
                     //
                     // FIXME(pcwalton): Could improve this by only allocating a canvas with a tight
                     // bounding rect and blitting only that part.
+                    println!("rasterizing glpyh!");
                     let mut temp_canvas = Canvas::new(&canvas.size, Format::Rgba32);
                     try!(self.rasterize_glyph(&mut temp_canvas,
                                             glyph_id,
                                             point_size,
-                                            origin,
+                                            Point2D::new(origin.x, canvas.size.height - origin.y)
+
                                             hinting_options,
                                             rasterization_options));
                     canvas.blit_from_canvas(&temp_canvas);
